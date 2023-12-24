@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 
 function ProgressGroup({ statName, statValue }) {
@@ -29,10 +29,13 @@ function ProgressGroup({ statName, statValue }) {
     attack: "red",
     hp: "teal",
   };
+  const pcView = useMediaQuery("(min-width: 600px)");
 
   return (
     <Group gap={"lg"} justify="space-between">
-      <Text w={120}>{statName}</Text>
+      <Text w={120}>
+        {statName.charAt(0).toUpperCase() + statName.slice(1)}
+      </Text>
       <Text w={40}>{statValue}</Text>
       <Progress
         w={300}
@@ -49,7 +52,7 @@ export default function PokeCard({ pokeData }) {
   const { imgUrl, id, name, types, stats } = pokeData;
   const [opened, { open, close }] = useDisclosure(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  const pcView = useMediaQuery("(min-width: 600px)");
   const pokeTypeColors = {
     bug: "rgba(21, 138, 64, 0.75)",
     dark: "rgba(122, 130, 125, 1)",
@@ -111,17 +114,27 @@ export default function PokeCard({ pokeData }) {
         }
         withBorder
         radius={"lg"}
-        w={325}
+        w={pcView ? 335 : "max-content"}
         onClick={open}
         bg={pokeTypeColors[types[0].type.name]}
       >
-        <Group gap={"lg"} p={5} align="flex-start" justify="space-between">
+        <Group
+          gap={pcView ? "lg" : 5}
+          p={5}
+          align="flex-start"
+          justify="space-between"
+        >
           <Stack py={15}>
             <Stack gap={0}>
               <Text w={100} size="md">
                 {id}.
               </Text>
-              <Text w={100} size="xl" fw={600}>
+              <Text
+                w={100}
+                size="xl"
+                fw={600}
+                style={{ wordBreak: "break-word" }}
+              >
                 {name.charAt(0).toUpperCase() + name.slice(1)}
               </Text>
             </Stack>
@@ -140,8 +153,8 @@ export default function PokeCard({ pokeData }) {
                 ? { animation: "tiltshaking 0.4s ease-in-out 2 forwards" }
                 : {}
             }
-            h={145}
-            w={145}
+            h={pcView ? 145 : 120}
+            w={pcView ? 145 : 120}
             src={imgUrl}
           />
         </Group>

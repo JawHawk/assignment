@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <Center>
-      <Box p={"xl"} w={"90%"}>
+      <Box py={"xl"} px={pcView ? "xl" : "md"} w={"100%"}>
         <Group
           justify="space-between"
           gap={"sm"}
